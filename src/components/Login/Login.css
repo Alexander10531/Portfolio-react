@@ -1,0 +1,23 @@
+.login-container{
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+}
+
+.label-container{
+    display: flex;
+    margin: 5px 0px;
+}
+
+.label-container > input{
+    width: 100%;
+}
+
+.login-button{
+    margin: auto;
+    padding: 5px;
+}
+
+.row-table{
+    background-color: red;
+}

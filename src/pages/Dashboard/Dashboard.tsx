@@ -1,5 +1,5 @@
 import React from "react";
-import DataTable from "../../components/Table/Table";
+import DataTable from "../../components/Table/Table.component";
 
 const Dashboard : React.FC = () => {
 

@@ -1,5 +1,15 @@
-.container-prueba{
+.fila-tabla{
+    background-color: #242424;
+}
+
+.fila-tabla:hover{
     background-color: #121212;
-    color: white;
-    border-color: #121212;
-}   
+    cursor: pointer;
+}
+
+.fila-paginacion{
+
+    background-color: '#242424'; 
+    color: 'white'; 
+
+}

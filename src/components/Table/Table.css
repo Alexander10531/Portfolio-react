@@ -1,5 +1,6 @@
 .fila-tabla{
     background-color: #242424;
+    color: white;
 }
 
 .fila-tabla:hover{
@@ -10,6 +11,13 @@
 .fila-paginacion{
 
     background-color: '#242424'; 
-    color: 'white'; 
+    color: white; 
+
+}
+
+.tabla-fila{
+
+    background-color: #242424;
+    color:white !important; 
 
 }

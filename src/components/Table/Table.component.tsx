@@ -1,44 +1,40 @@
 import './Table.css'
-import * as React from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import { columns } from './Table.columns'
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
+import { getProducts } from './serviceProducts';
 import TableContainer from '@mui/material/TableContainer';
 import { TableBody, TablePagination } from '@mui/material';
-import type { Data } from '../../interfaces/Table';
-import { getProducts } from './serviceProducts';
+import type { ProductList } from '../../interfaces/Product';
 
-let data = getProducts(); 
 
-function createData(name: string, code: string, population: number, size: number,): Data {
-	const density = population / size;
-	return { name, code, population, size, density };
+function createData(idProduct: string, nameProduct: string, modelProduct: string) {
+	return [idProduct, nameProduct, modelProduct, "asd", "asd" ]; 
 }
 
-const rows = [
-	createData('India', 'IN', 1324171354, 3287263),
-	createData('China', 'CN', 1403500365, 9596961),
-	createData('Italy', 'IT', 60483973, 301340),
-	createData('United States', 'US', 327167434, 9833520),
-	createData('Canada', 'CA', 37602103, 9984670),
-	createData('Australia', 'AU', 25475400, 7692024),
-	createData('Germany', 'DE', 83019200, 357578),
-	createData('Ireland', 'IE', 4857000, 70273),
-	createData('Mexico', 'MX', 126577691, 1972550),
-	createData('Japan', 'JP', 126317000, 377973),
-	createData('France', 'FR', 67022000, 640679),
-	createData('United Kingdom', 'GB', 67545757, 242495),
-	createData('Russia', 'RU', 146793744, 17098246),
-	createData('Nigeria', 'NG', 200962417, 923768),
-	createData('Brazil', 'BR', 210147125, 8515767),
-];
-
 export default function StickyHeadTable() {
+
+	const [rows, setRows] = React.useState<any[]>([]);
+
+	React.useEffect(() => {
+		getProducts().then((response: ProductList) => {
+			let data = response.data.map((product) => {
+				return createData(
+					product.idProduct.toString(),
+					product.nameProduct,
+					product.modelProduct,
+				);
+			});
+			setRows(data);
+		});
+	}, []);
+
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);	
+	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
 	};
@@ -48,56 +44,57 @@ export default function StickyHeadTable() {
 		setPage(0);
 	};
 
+	if (!rows) {
+		return <div>Loading...</div>;
+	}
+	if (rows.length === 0) {
+		return <div>No data available</div>;
+	}	
 	return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440  }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  sx={{ backgroundColor: '#121212', color: 'white' }}
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow 
-                    className='fila-tabla' role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align} sx={{ color: 'white' }}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        sx={{ backgroundColor: '#242424', color: 'white' }}
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}/>
-    </Paper>
-  );
+		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+			<TableContainer sx={{ maxHeight: 440 }}>
+				<Table stickyHeader aria-label="sticky table">
+					<TableHead>
+						<TableRow>
+							{columns.map((column) => (
+								<TableCell
+									sx={{ backgroundColor: '#121212', color: 'white' }}
+									key={column.id}
+									align={column.align}
+									style={{ minWidth: column.minWidth }}>
+									{column.label}
+								</TableCell>
+							))}
+						</TableRow>
+					</TableHead>
+					<TableBody>
+							{
+								rows.map((row : String[], index) => {
+									return (
+										<TableRow className='fila-tabla' key={index}>
+											{
+												row.map((cell, indexColumn) => {
+													return (
+														<TableCell className='tabla-fila' key={`${index}-${indexColumn}`}>{cell}</TableCell>
+													)
+												})
+											}
+										</TableRow>
+									)
+								})
+							}
+					</TableBody>
+				</Table>
+			</TableContainer>
+			<TablePagination
+				sx={{ backgroundColor: '#242424', color: 'white' }}
+				rowsPerPageOptions={[10, 25, 100]}
+				component="div"
+				count={rows.length}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				onPageChange={handleChangePage}
+				onRowsPerPageChange={handleChangeRowsPerPage} />
+		</Paper>
+	);
 }

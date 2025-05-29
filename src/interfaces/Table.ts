@@ -13,3 +13,8 @@ export interface Data {
 	size: number;
 	density: number;
 }
+
+export interface TableProps {
+	columns: readonly Column[];
+	rows : String[][]; 
+}

@@ -1,9 +1,10 @@
 import axios from "axios";
 import type { ProductList } from "../../interfaces/Product";
 
-export const getProducts  = async (): Promise<ProductList> => {
+export const getProducts  = async (page : number): Promise<ProductList> => {
+    const url = `http://localhost:3000/product/getProductList?page=${page}&pageSize=50`;
     const response = await axios.get(
-        "http://localhost:3000/product/getProductList?page=1&pageSize=5", 
+        url, 
         {
             headers: {
                 "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 export interface Column {
-	id: 'name' | 'code' | 'population' | 'size' | 'density';
+	id: string;
 	label: string;
 	minWidth?: number;
 	align?: 'right';
@@ -15,6 +15,9 @@ export interface Data {
 }
 
 export interface TableProps {
+	currentPage: number; 
 	columns: readonly Column[];
 	rows : String[][]; 
+	totalCount: number;
+	nextPageFunction: (page : number) => void;
 }

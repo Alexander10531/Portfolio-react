@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { getProducts } from "../../components/Table/serviceProducts";
 import DataTable from "../../components/Table/Table.component";
 import { columns } from '../../components/Table/Table.columns';
@@ -6,14 +6,26 @@ import type { ProductList } from "../../interfaces/Product";
 
 const Dashboard: React.FC = () => {
 
-    const [rows, setRows] = React.useState<any[]>([]);
-    
+    const [page, setPage] = React.useState(0);
+    const [rows, setRows] = React.useState<string[][]>([]);
+    const [totalCount, setTotalCount] = React.useState(0);
+    const greaterPage = React.useRef(0);
+
     function createData(idProduct: string, nameProduct: string, modelProduct: string) {
-        return [idProduct, nameProduct, modelProduct, "asd", "asd"];
+        return [idProduct, nameProduct, modelProduct];
     }
 
-    React.useEffect(() => {
-        getProducts().then((response: ProductList) => {
+    function extractData(page: number) {
+
+        if(greaterPage.current >= page) {
+            return; 
+        }
+
+        greaterPage.current = page;
+
+        getProducts(page).then((response: ProductList) => {
+            setTotalCount(response.count);
+            let previousData = rows; 
             let data = response.data.map((product) => {
                 return createData(
                     product.idProduct.toString(),
@@ -21,17 +33,25 @@ const Dashboard: React.FC = () => {
                     product.modelProduct,
                 );
             });
-            setRows(data);
-        });
-    }, []);
+            
+            // if(page > greaterPage.current) {
+            //     greaterPage.current = page;
+            // }
 
-    if(rows.length === 0){
-        return(<span>Loading...</span>); 
+            setRows([...previousData, ...data]);  
+        });
+
     }
 
     return (
         <>
-            <DataTable columns={columns} rows={rows}  />
+            <DataTable
+                currentPage={page}
+                columns={columns}
+                rows={rows}
+                totalCount={totalCount}
+                nextPageFunction={extractData}
+            />
         </>
     );
 

@@ -1,11 +1,11 @@
 import type { Column } from '../../interfaces/Table';
 
 export const columns: readonly Column[] = [
-	{ id: 'name', label: 'Name', minWidth: 170 },
-	{ id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+	{ id: 'idProduct', label: 'id Product', minWidth: 170 },
+	{ id: 'name', label: 'Name', minWidth: 100 },
 	{
-		id: 'population',
-		label: 'Population',
+		id: 'model',
+		label: 'Model',
 		minWidth: 170,
 		format: (value: number) => value.toLocaleString('en-US'),
 	}

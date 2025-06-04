@@ -36,6 +36,7 @@ export default function StickyHeadTable({ columns, rows, currentPage, nextPageFu
 				</Table>
 			</TableContainer>
 			<TablePagination
+				className='table-pagination'
 				rowsPerPageOptions={[50]}
 				component="div"
 				count={totalCount}

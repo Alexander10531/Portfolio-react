@@ -1,7 +1,7 @@
 import React from "react";
 import './Modal-form.css';
-import { Box, Button, Modal, Typography } from "@mui/material";
-
+import { Box, Button, Modal } from "@mui/material";
+import { createProduct } from "../Table/serviceProducts"; 
 
 export default function ModalForm() {
 
@@ -11,7 +11,7 @@ export default function ModalForm() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 400,
-        bgcolor: 'red',
+        bgcolor: '#242424',
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
@@ -22,10 +22,17 @@ export default function ModalForm() {
     const handleClose = () => setOpen(false);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
         console.log("Formulario enviado");
+        event.preventDefault();
+        createProduct()
+            .then(response => {
+                console.log("Producto creado:", response);
+                handleClose();
+            })
+            .catch(error => {
+                console.error("Error al crear el producto:", error);
+            });
     }
-
 
     return (
         <>
@@ -39,7 +46,9 @@ export default function ModalForm() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description">
                 <Box sx={style}>
-                    <form action="">
+                    <form  
+                        onSubmit={handleSubmit} 
+                        className="form-modal" action="">
                         <input type="text" placeholder="Nombre del producto" />
                         <input type="text" placeholder="Modelo del producto" />
                         <select name="" id="">
@@ -49,6 +58,7 @@ export default function ModalForm() {
                             <option value="">Opcion 3</option>
                         </select>
                         <Button
+                            type="submit"
                             className="full-button"
                             variant="contained">Agregar producto</Button>
                     </form>

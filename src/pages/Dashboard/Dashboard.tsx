@@ -45,7 +45,8 @@ const Dashboard: React.FC = () => {
 
     return (
         <>
-            <ModalForm />
+            <ModalForm
+                className="trigger-button"/>
             <DataTable
                 currentPage={page}
                 columns={columns}

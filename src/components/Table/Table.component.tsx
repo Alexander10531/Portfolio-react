@@ -1,9 +1,9 @@
 import './Table.css'
-import React, { useEffect } from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
-import { TablePagination } from '@mui/material';
+import { Skeleton, TablePagination } from '@mui/material';
 import type { TableProps } from '../../interfaces/Table';
 import { TableHeadComponent } from '../TableHead/Table.head.component';
 import TableBodyComponent from '../TableBody/Table.body.component';
@@ -30,7 +30,7 @@ export default function StickyHeadTable({ columns, rows, currentPage, nextPageFu
 	return (
 		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
 			<TableContainer sx={{ maxHeight: 440 }}>
-				<Table stickyHeader aria-label="sticky table">
+				<Table className='table-container' stickyHeader aria-label="sticky table">
 					<TableHeadComponent totalCount={totalCount} currentPage={currentPage} columns={columns} rows={rows} nextPageFunction={nextPageFunction} />
 					<TableBodyComponent totalCount={totalCount} currentPage={currentPage} rows={rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)} columns={columns} nextPageFunction={nextPageFunction} />
 				</Table>

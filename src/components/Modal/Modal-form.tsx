@@ -3,8 +3,9 @@ import './Modal-form.css';
 import { Box, Button, Modal } from "@mui/material";
 import { createProduct } from "../Table/serviceProducts";
 import type { newProductRequest } from "../../interfaces/Product";
+import type { ModalInterface } from "../../interfaces/Modal";
 
-export default function ModalForm() {
+export default function ModalForm({ className } : ModalInterface) {
 
     const [formData, setFormData] = useState<newProductRequest>({
         idEstado : 1, idCategoria : 1, nombreProducto : "", modeloProducto : ""}); 
@@ -35,7 +36,6 @@ export default function ModalForm() {
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 
-        console.log(formData); 
         event.preventDefault();
         createProduct(formData)
             .then(response => {
@@ -51,7 +51,7 @@ export default function ModalForm() {
         <>
             <Button
                 onClick={handleOpen}
-                className="full-button"
+                className={`full-button ${className}`}
                 variant="contained">Agregar producto</Button>
             <Modal
                 open={open}

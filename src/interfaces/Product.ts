@@ -16,3 +16,12 @@ export interface ProductList{
     count : number;
 
 }
+
+export interface newProductRequest{
+
+    nombreProducto : String; 
+    modeloProducto : String; 
+    idCategoria : number; 
+    idEstado : number; 
+
+}

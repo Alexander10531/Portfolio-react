@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import './Modal-form.css';
 import { Box, Button, Modal } from "@mui/material";
-import { createProduct } from "../Table/serviceProducts"; 
+import { createProduct } from "../Table/serviceProducts";
+import type { newProductRequest } from "../../interfaces/Product";
 
 export default function ModalForm() {
+
+    const [formData, setFormData] = useState<newProductRequest>({
+        idEstado : 1, idCategoria : 1, nombreProducto : "", modeloProducto : ""}); 
+
+    const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
 
     const style = {
         position: 'absolute',
@@ -22,16 +34,17 @@ export default function ModalForm() {
     const handleClose = () => setOpen(false);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        console.log("Formulario enviado");
+
+        console.log(formData); 
         event.preventDefault();
-        createProduct()
+        createProduct(formData)
             .then(response => {
-                console.log("Producto creado:", response);
                 handleClose();
             })
             .catch(error => {
                 console.error("Error al crear el producto:", error);
             });
+
     }
 
     return (
@@ -46,16 +59,25 @@ export default function ModalForm() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description">
                 <Box sx={style}>
-                    <form  
-                        onSubmit={handleSubmit} 
+                    <form
+                        onSubmit={handleSubmit}
                         className="form-modal" action="">
-                        <input type="text" placeholder="Nombre del producto" />
-                        <input type="text" placeholder="Modelo del producto" />
-                        <select name="" id="">
+                        <input
+                            onChange={handleChangeInput}
+                            name="nombreProducto"
+                            type="text"
+                            placeholder="Nombre del producto" />
+                        <input
+                            onChange={handleChangeInput}
+                            name="modeloProducto"
+                            type="text"
+                            placeholder="Modelo del producto" />
+                        <select
+                            onChange={handleChangeSelect} 
+                            name="idCategoria" id="idCategoria">
                             <option value="">Seleccione una opcion</option>
-                            <option value="">Opcion 1</option>
-                            <option value="">Opcion 2</option>
-                            <option value="">Opcion 3</option>
+                            <option value="1">Televisores</option>
+                            <option value="2">Monitores</option>
                         </select>
                         <Button
                             type="submit"

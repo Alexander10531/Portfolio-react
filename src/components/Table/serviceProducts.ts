@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ProductList } from "../../interfaces/Product";
+import type { newProductRequest, ProductList } from "../../interfaces/Product";
 
 export const getProducts = async (page: number): Promise<ProductList> => {
     const url = `http://localhost:3000/product/getProductList?page=${page}&pageSize=50`;
@@ -17,18 +17,12 @@ export const getProducts = async (page: number): Promise<ProductList> => {
     return response.data;
 }
 
-export const createProduct = async (): Promise<String> => {
+export const createProduct = async (formData : newProductRequest): Promise<String> => {
 
-    const request = {
-        "nombreProducto": "Producto de prueba",
-        "modeloProducto": "Modelo de prueba",
-        "idCategoria": 1, 
-        "idEstado" : 1  
-    }
     const url = `http://localhost:3000/product`;
     const response = await axios.post(
         url,
-        request,
+        formData,
         {
               headers: {
                 "Content-Type": "application/json",
